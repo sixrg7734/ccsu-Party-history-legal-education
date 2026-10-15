@@ -1,0 +1,44 @@
+// 党史普法自动刷题
+// F12 粘控制台回车就行
+
+const sleep = t => new Promise(r => setTimeout(r, t));
+
+(async () => {
+  let n = 0;
+  while (n < 200) {
+    n++;
+    console.log('第' + n + '题');
+
+    // 先点确定看答案
+    vm.go();
+    await sleep(1200);
+
+    const a2 = document.getElementById('answer2').textContent.trim();
+    const a1 = document.getElementById('answer1').textContent.trim();
+
+    if (a1.includes('正确')) {
+      // 已经对了直接下一题
+    } else if (a2) {
+      const m = a2.match(/答案[：:]\s*([A-Z](?:[,，]\s*[A-Z])*)/);
+      if (m) {
+        const vals = m[1].split(/[,，]\s*/).map(s => String('ABCDEFGHIJKLMN'.indexOf(s.trim()) + 1));
+        if (vm.question.qIsmultiple == 0) {
+          vm.redioName = vals[0];
+        } else {
+          vm.checkedNames = vals;
+        }
+        await sleep(400);
+        vm.go(); // 选好了再点一次确定
+        await sleep(1200);
+      }
+    }
+
+    vm.goNext();
+    await sleep(1500);
+
+    if (!vm.showList || !vm.question.qContent) {
+      console.log('完事了，共' + n + '题');
+      break;
+    }
+  }
+})();
