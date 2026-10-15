@@ -5,7 +5,7 @@ const sleep = t => new Promise(r => setTimeout(r, t));
 
 (async () => {
   let n = 0;
-  while (n < 200) {
+  while (n < 400) {
     n++;
     console.log('第' + n + '题');
 
